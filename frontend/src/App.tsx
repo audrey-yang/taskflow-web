@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import Header from "./components/Header";
+import TaskList from "./components/TaskList";
+import Login from "./components/Login";
+import { STATUS } from "./types";
 
-function App() {
-  const [count, setCount] = useState(0)
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+  typography: {
+    fontFamily: `"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Oxygen", "sans-serif"`,
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+  },
+});
+
+const App: () => JSX.Element = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    window.localStorage.getItem("loggedIn") === "y"
+  );
+
+  // Lift state out of Header for refresh
+  const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
+  const [numInProgressTasks, setNumInProgressTasks] = useState(0);
+  const [numCompletedTasks, setNumCompletedTasks] = useState(0);
+
+  const getTaskCounts = async () => {
+    // setNumUnstartedTasks(
+    //   await window.api.countChildTasksByStatus("", STATUS.NOT_STARTED)
+    // );
+    // setNumInProgressTasks(
+    //   await window.api.countChildTasksByStatus("", STATUS.IN_PROGRESS)
+    // );
+    // setNumCompletedTasks(
+    //   await window.api.countChildTasksByStatus("", STATUS.COMPLETED)
+    // );
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <div className="App">
+        <Typography variant="h3" className="my-2">
+          Taskflow
+        </Typography>
+        {isLoggedIn ? (
+          <>
+            <Header
+              numUnstartedTasks={numUnstartedTasks}
+              numInProgressTasks={numInProgressTasks}
+              numCompletedTasks={numCompletedTasks}
+            />
+            <TaskList refreshHeader={getTaskCounts} />
+          </>
+        ) : (
+          <Login setIsLoggedIn={setIsLoggedIn} />
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </ThemeProvider>
+  );
+};
 
-export default App
+export default App;
