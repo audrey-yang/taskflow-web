@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import Header from "./components/Header";
-import TaskList from "./components/TaskList";
 import Login from "./components/Login";
-import { STATUS } from "./types";
+import Taskflow from "./components/Taskflow";
+import { api } from "./api";
 
 const darkTheme = createTheme({
   palette: {
@@ -25,22 +24,12 @@ const App: () => JSX.Element = () => {
     window.localStorage.getItem("loggedIn") === "y"
   );
 
-  // Lift state out of Header for refresh
-  const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
-  const [numInProgressTasks, setNumInProgressTasks] = useState(0);
-  const [numCompletedTasks, setNumCompletedTasks] = useState(0);
-
-  const getTaskCounts = async () => {
-    // setNumUnstartedTasks(
-    //   await window.api.countChildTasksByStatus("", STATUS.NOT_STARTED)
-    // );
-    // setNumInProgressTasks(
-    //   await window.api.countChildTasksByStatus("", STATUS.IN_PROGRESS)
-    // );
-    // setNumCompletedTasks(
-    //   await window.api.countChildTasksByStatus("", STATUS.COMPLETED)
-    // );
-  };
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("Logging in");
+      api.initDb(window.localStorage.getItem("username") ?? "");
+    }
+  }, [isLoggedIn]);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -49,18 +38,7 @@ const App: () => JSX.Element = () => {
         <Typography variant="h3" className="my-2">
           Taskflow
         </Typography>
-        {isLoggedIn ? (
-          <>
-            <Header
-              numUnstartedTasks={numUnstartedTasks}
-              numInProgressTasks={numInProgressTasks}
-              numCompletedTasks={numCompletedTasks}
-            />
-            <TaskList refreshHeader={getTaskCounts} />
-          </>
-        ) : (
-          <Login setIsLoggedIn={setIsLoggedIn} />
-        )}
+        {isLoggedIn ? <Taskflow /> : <Login setIsLoggedIn={setIsLoggedIn} />}
       </div>
     </ThemeProvider>
   );

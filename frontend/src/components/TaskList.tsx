@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Task from "./Task";
 import NewTask from "./NewTask";
 import { DBTask } from "../types";
+import { api } from "../api";
 
 const TaskList = ({
   parentId,
@@ -20,8 +21,8 @@ const TaskList = ({
 
   const populateTasks = async (tries?: number) => {
     try {
-      // setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
-      // setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
+      setIncompleteTasks(await api.getChildTasksIncomplete(parentId ?? ""));
+      setCompleteTasks(await api.getChildTasksComplete(parentId ?? ""));
       if (!parentId && refreshHeader) {
         // Refresh the header only at the top level
         refreshHeader();

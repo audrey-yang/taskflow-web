@@ -18,6 +18,7 @@ import {
   statusSelect,
   titleEditor,
 } from "./EditComponents";
+import { api } from "../api";
 
 const TaskList = lazy(() => import("./TaskList"));
 
@@ -49,28 +50,28 @@ const Task = ({
   // Change handlers
   const changePriority = async (event: SelectChangeEvent) => {
     const newPriority = event.target.value as unknown as Priority;
-    // await window.api.changeTaskPriority(_id, newPriority);
+    await api.changeTaskPriority(_id, newPriority);
     setTaskPriority(newPriority);
     await refresh();
   };
   const changeStatus = async (event: SelectChangeEvent) => {
     const newStatus = event.target.value as unknown as Status;
-    // await window.api.changeTaskStatus(_id, newStatus);
+    await api.changeTaskStatus(_id, newStatus);
     setTaskStatus(newStatus);
     await refresh();
   };
   const changeTitle = async (newTitle: string) => {
-    // await window.api.changeTaskTitle(_id, newTitle);
+    await api.changeTaskTitle(_id, newTitle);
     setTaskTitle(newTitle);
     setIsEditingTitle(false);
   };
   const changeNote = async (note: string) => {
-    // await window.api.changeTaskNote(_id, note);
+    await api.changeTaskNote(_id, note);
     setTaskNote(note);
     setIsEditingNote(false);
   };
   const deleteTask = async () => {
-    // await window.api.deleteTask(_id);
+    await api.deleteTask(_id);
     await refresh();
   };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
+import { api } from "../api";
 
 const Login = ({
   setIsLoggedIn,
@@ -12,9 +13,9 @@ const Login = ({
   const [hasError, setHasError] = useState(false);
 
   const submitPassword = async () => {
-    // if (await window.api.checkPassword(password)) {
-    if (true) {
+    if (await api.checkPassword(password)) {
       window.localStorage.setItem("loggedIn", "y");
+      window.localStorage.setItem("username", password);
       setIsLoggedIn(true);
     } else {
       setHasError(true);

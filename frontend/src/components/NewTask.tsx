@@ -7,6 +7,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Priority, priorityToString, PRIORITY, STATUS } from "../types";
+import { api } from "../api";
 
 const NewTask = ({
   parentId,
@@ -32,7 +33,13 @@ const NewTask = ({
       setTitleHasError(true);
       return;
     }
-    // await window.api.createTask({ title, priority, status: STATUS.NOT_STARTED, parentId });
+    await api.createTask({
+      title,
+      priority,
+      status: STATUS.NOT_STARTED,
+      parentId,
+      note: "",
+    });
     setTitle("");
     setPriority(PRIORITY.LOW);
     onTaskAdded();
