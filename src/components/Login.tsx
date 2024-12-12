@@ -13,7 +13,8 @@ const Login = ({
   const [hasError, setHasError] = useState(false);
 
   const submitPassword = async () => {
-    if (await api.checkPassword(password)) {
+    if (api.checkPassword(password)) {
+      window.localStorage.setItem("version", "0.0.0");
       window.localStorage.setItem("loggedIn", "y");
       window.localStorage.setItem("username", password);
       setIsLoggedIn(true);

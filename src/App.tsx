@@ -21,7 +21,9 @@ const darkTheme = createTheme({
 
 const App: () => JSX.Element = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    window.localStorage.getItem("loggedIn") === "y"
+    window.localStorage.getItem("loggedIn") === "y" &&
+      window.localStorage.getItem("username") != null &&
+      window.localStorage.getItem("version") === "0.0.0"
   );
 
   useEffect(() => {
