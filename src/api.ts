@@ -48,7 +48,7 @@ export const api = {
   },
   getChildTasksIncomplete: async (parentId: string) => {
     if (!db) {
-      return [];
+      throw new Error("No database found");
     }
 
     return await db

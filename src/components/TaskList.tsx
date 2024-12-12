@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Task from "./Task";
 import NewTask from "./NewTask";
@@ -50,9 +50,11 @@ const TaskList = ({
       {parentIsCompleted ? null : (
         <NewTask parentId={parentId ?? ""} onTaskAdded={populateTasks} />
       )}
-      {incompleteTasks.map((task) => (
-        <Task key={task._id} {...task} refresh={populateTasks} />
-      ))}
+      <Suspense fallback={<div>Loading... </div>}>
+        {incompleteTasks.map((task) => (
+          <Task key={task._id} {...task} refresh={populateTasks} />
+        ))}
+      </Suspense>
       {completeTasks.length > 0 ? (
         <div>
           <Button
@@ -63,11 +65,13 @@ const TaskList = ({
           >
             {showCompleted ? "Hide completed tasks" : "Show completed tasks"}
           </Button>
-          {showCompleted
-            ? completeTasks.map((task) => (
-                <Task key={task._id} {...task} refresh={populateTasks} />
-              ))
-            : null}
+          <Suspense fallback={<div>Loading... </div>}>
+            {showCompleted
+              ? completeTasks.map((task) => (
+                  <Task key={task._id} {...task} refresh={populateTasks} />
+                ))
+              : null}
+          </Suspense>
         </div>
       ) : null}
     </div>

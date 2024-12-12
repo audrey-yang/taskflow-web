@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -28,7 +28,6 @@ const App: () => JSX.Element = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("Logging in");
       api.initDb(window.localStorage.getItem("username") ?? "");
     }
   }, [isLoggedIn]);
@@ -36,12 +35,14 @@ const App: () => JSX.Element = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <div className="App">
-        <Typography variant="h3" className="my-2">
-          Taskflow
-        </Typography>
-        {isLoggedIn ? <Taskflow /> : <Login setIsLoggedIn={setIsLoggedIn} />}
-      </div>
+      <Suspense fallback={<div>Loading... </div>}>
+        <div className="App">
+          <Typography variant="h3" className="my-2">
+            Taskflow
+          </Typography>
+          {isLoggedIn ? <Taskflow /> : <Login setIsLoggedIn={setIsLoggedIn} />}
+        </div>
+      </Suspense>
     </ThemeProvider>
   );
 };
