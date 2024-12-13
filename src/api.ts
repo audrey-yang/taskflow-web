@@ -15,7 +15,7 @@ const updateTaskField = async (id: string, field: Partial<Task>) => {
 
 export const api = {
   initDb: (user: string) => {
-    db = new PouchDB("tasks");
+    db = new PouchDB(`tasks_${user}`);
     const remoteDb = new PouchDB(
       `${import.meta.env.VITE_CLOUDANT_URL}_${user}`,
       {

@@ -103,49 +103,56 @@ const Task = ({
           padding: 0,
         }}
       >
-        <div className="flex flex-row items-center w-full px-1">
-          <CircleIcon sx={{ color: priorityToColor(taskPriority) }} />
-          <div className="w-1/2 px-2">
-            {isEditingTitle ? (
-              <div className="flex flex-row items-center ">
-                {titleEditor(newTitle, setNewTitle, changeTitle)}
-                <ButtonGroup size="small" aria-label="Submit or cancel">
-                  <IconButton
-                    aria-label="done"
-                    onClick={() => changeTitle(newTitle)}
-                  >
-                    <DoneIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="cancel"
-                    onClick={() => setIsEditingTitle(false)}
-                  >
-                    <CancelIcon />
-                  </IconButton>
-                </ButtonGroup>
-              </div>
-            ) : (
-              <div className="flex flex-row items-center">
-                <div className="w-10/12 font-semibold">{taskTitle}</div>
-                <ButtonGroup size="small" aria-label="Submit or cancel">
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => setIsEditingTitle(true)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="delete" onClick={deleteTask}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ButtonGroup>
-              </div>
-            )}
+        <div className="flex flex-col sm:flex-row items-center w-full px-2">
+          <div className="w-full sm:w-1/2 px-2">
+            <div className="flex flex-row items-center">
+              <CircleIcon
+                sx={{ color: priorityToColor(taskPriority) }}
+                className="px-1"
+              />
+              {isEditingTitle ? (
+                <>
+                  {titleEditor(newTitle, setNewTitle, changeTitle)}
+                  <ButtonGroup size="small" aria-label="Submit or cancel">
+                    <IconButton
+                      aria-label="done"
+                      onClick={() => changeTitle(newTitle)}
+                    >
+                      <DoneIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="cancel"
+                      onClick={() => setIsEditingTitle(false)}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                  </ButtonGroup>
+                </>
+              ) : (
+                <>
+                  <div className="w-10/12 font-semibold">{taskTitle}</div>
+                  <ButtonGroup size="small" aria-label="Submit or cancel">
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => setIsEditingTitle(true)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" onClick={deleteTask}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ButtonGroup>
+                </>
+              )}
+            </div>
           </div>
-          <div className="w-1/4 px-2">
-            {prioritySelect(taskPriority, changePriority)}
-          </div>
-          <div className="w-1/4 px-2">
-            {statusSelect(taskStatus, changeStatus)}
+          <div className="w-full sm:w-1/2 flex flex-row">
+            <div className="w-1/2 px-2">
+              {prioritySelect(taskPriority, changePriority)}
+            </div>
+            <div className="w-1/2 px-2">
+              {statusSelect(taskStatus, changeStatus)}
+            </div>
           </div>
         </div>
       </AccordionSummary>
