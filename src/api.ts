@@ -131,6 +131,10 @@ export const api = {
     await recursiveDelete(id);
   },
   checkPassword: (password: string) => {
-    return password === import.meta.env.VITE_APP_PASSWORD;
+    if (password === import.meta.env.VITE_APP_PASSWORD) {
+      console.log(import.meta.env);
+      return import.meta.env.VITE_CLOUDANT_DBNAME;
+    }
+    return "";
   },
 };
